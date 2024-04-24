@@ -106,7 +106,7 @@ bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType 
 						return false;
 					}
 					if (cells[ypos - 1][xpos - i] != CELLTYPE_PBLACK) {
-						std::cout << "ne tuda" << std::endl;
+						std::cout << "ne tuda!" << std::endl;
 						return false;
 					}
 					if (std::abs(xpos - dxpos) != 2) {
