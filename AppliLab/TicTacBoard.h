@@ -12,6 +12,7 @@ class TicTacBoard {
 	int boardsize;
 	CellType** cells;
 	bool bVictory = false;
+	bool side = false;
 	bool IsRowMade(unsigned row);
 	bool IsColumnMade(unsigned col);
 	bool IsDiagMade();
@@ -20,8 +21,9 @@ public:
 	TicTacBoard(int size);
 	virtual ~TicTacBoard();
 	void Show();
-	void DelCell(int xpos, int ypos, CellType dct);
-	void SetCell(int xpos, int ypos, CellType ct);
+	void SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct);
+	bool CanFight(int dypos, int dxpos, CellType ct);
+	bool MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool CheckEndCondition();
 	bool IsVictory();

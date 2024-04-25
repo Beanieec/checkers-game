@@ -72,13 +72,10 @@ void TicTacBoard::Show() {
 		std::cout << std::endl;
 	}
 }
-void TicTacBoard::DelCell(int xpos, int ypos, CellType dct) {
-	cells[ypos][xpos] = dct;
-		
-}
 
-void TicTacBoard::SetCell(int xpos, int ypos, CellType ct) {
+void TicTacBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) {
 	cells[ypos][xpos] = ct;
+	cells[dypos][dxpos] = dct;
 }
 
 TicTacBoard::~TicTacBoard() {
@@ -87,107 +84,118 @@ TicTacBoard::~TicTacBoard() {
 	delete[] cells;
 }
 
+bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) {
+	
+	if (ct == CELLTYPE_PWHITE) {
+		if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PBLACK) {
+			if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+				side = false;
+				return true;
+			}
+		}
+		if ((cells[dypos + 1][dxpos - 1]) == CELLTYPE_PBLACK) {
+			if ((cells[dypos + 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+				side = true;
+				return true;
+			}
+		}
+	}
+	if (ct == CELLTYPE_PBLACK) {
+		if ((cells[dypos - 1][dxpos + 1]) == CELLTYPE_PWHITE) {
+			if ((cells[dypos - 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+				side = false;
+				return true;
+			}
+		}
+		if ((cells[dypos - 1][dxpos - 1]) == CELLTYPE_PWHITE) {
+			if ((cells[dypos - 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+				side = true;
+				return true;
+			}
+		}
+	}
+	return false;
 
+	
+}
+
+bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
+	
+	if (cells[dypos][dxpos] != ct) {
+		return false;
+	}
+
+	if (CanFight(dypos, dxpos, ct)) {
+		switch (ct)
+		{
+		case CELLTYPE_PWHITE:
+			switch (side)
+			{
+			case true:
+				if (ypos - dypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos - 1][xpos + 1] != CELLTYPE_PBLACK)
+					return false;
+				cells[dypos + 1][dxpos - 1] = CELLTYPE_EBLACK;
+				return true;
+				break;
+			case false:
+				if (ypos - dypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos - 1][xpos - 1] != CELLTYPE_PBLACK)
+					return false;
+				cells[dypos + 1][dxpos + 1] = CELLTYPE_EBLACK;
+				return true;
+				break;
+			}
+			break;
+		case CELLTYPE_PBLACK:
+			switch (side)
+			{
+			case true:
+				if (dypos - ypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos - 1][xpos + 1] != CELLTYPE_PWHITE)
+					return false;
+				cells[dypos - 1][dxpos - 1] = CELLTYPE_EBLACK;
+				return true;
+				break;
+			case false:
+				if (dypos - ypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos - 1][xpos - 1] != CELLTYPE_PWHITE)
+					return false;
+				cells[dypos - 1][dxpos + 1] = CELLTYPE_EBLACK;
+				return true;
+				break;
+			}
+			break;
+		}
+		
+		
+	}
+	else {
+		switch (ct)
+		{
+		case CELLTYPE_PWHITE:
+			if (std::abs(xpos - dxpos) != 1 || ypos - dypos != 1) {
+				return false;
+			}
+			return true;
+			break;
+		case CELLTYPE_PBLACK:
+			if (std::abs(dxpos - xpos) != 1 || dypos - ypos != 1) {
+				return false;
+			}
+			return true;
+			break;
+		}
+	}
+}
 
 bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
+	
 	if ((xpos < 0) || (xpos > boardsize) || (ypos < 0) || (ypos > boardsize)){
 		return false;
 	}
-	
-	if (ct == CELLTYPE_PWHITE) {
-		for (int i = -1; i < 2; i += 2) {
-			if ((cells[dypos + 1][dxpos + i]) == CELLTYPE_PBLACK) {
-				if ((cells[dypos + 2][dxpos + i + i]) == CELLTYPE_EBLACK) {
-					if (cells[dypos][dxpos] != CELLTYPE_PWHITE) {
-						std::cout << "1!" << std::endl;
-						return false;
-					}
-					if (cells[ypos][xpos] != CELLTYPE_EBLACK) {
-						return false;
-					}
-					if (cells[ypos - 1][xpos - i] != CELLTYPE_PBLACK) {
-						std::cout << "ne tuda!" << std::endl;
-						return false;
-					}
-					if (std::abs(xpos - dxpos) != 2) {
-						std::cout << "2!" << std::endl;
-						return false;
-					}
-					if (ypos - dypos != 2) {
-						std::cout << "3!" << std::endl;
-						return false;
-					}
-					cells[dypos + 1][dxpos + i] = CELLTYPE_EBLACK;
-					break;
-				}
-				if (i != 1)
-					continue;
-			}
-			if (i != 1)
-				continue;
-			if (cells[dypos][dxpos] != CELLTYPE_PWHITE) {
-				std::cout << "1" << std::endl;
-				return false;
-			}
-			if (std::abs(xpos - dxpos) != 1) {
-				std::cout << "2" << std::endl;
-				return false;
-			}
-			if (ypos - dypos != 1) {
-				std::cout << "3" << std::endl;
-				return false;
-			}
-		}
-	}
-		
-	if (ct == CELLTYPE_PBLACK) {
-		for (int i = -1; i < 2; i += 2) {
-			if ((cells[dypos - 1][dxpos + i]) == CELLTYPE_PWHITE) {
-				if ((cells[dypos - 2][dxpos + i + i]) == CELLTYPE_EBLACK) {
-					if (cells[dypos][dxpos] != CELLTYPE_PBLACK) {
-						std::cout << "1!" << std::endl;
-						return false;
-					}
-					if (cells[ypos][xpos] != CELLTYPE_EBLACK) {
-						return false;
-					}
-					if (cells[ypos + 1][xpos - i] != CELLTYPE_PWHITE) {
-						std::cout << "ne tuda" << std::endl;
-						return false;
-					}
-					if (std::abs(xpos - dxpos) != 2) {
-						std::cout << "2!" << std::endl;
-						return false;
-					}
-					if (dypos - ypos != 2) {
-						std::cout << "3!" << std::endl;
-						return false;
-					}
-					cells[dypos - 1][dxpos + i] = CELLTYPE_EBLACK;
-					break;
-				}
-				if (i != 1)
-					continue;
-			}
-			if (i != 1)
-				continue;
-			if (cells[dypos][dxpos] != CELLTYPE_PBLACK) {
-				std::cout << "1" << std::endl;
-				return false;
-			}
-			if (std::abs(xpos - dxpos) != 1) {
-				std::cout << "2" << std::endl;
-				return false;
-			}
-			if (dypos - ypos != 1) {
-				std::cout << "3" << std::endl;
-				return false;
-			}
-		}
-	}
-	
+
 	if (cells[dypos][dxpos] == CELLTYPE_EBLACK) {
-		std::cout << "!!" << std::endl;
+		return false;
+	}
+	
+	if (MovesRule(xpos, ypos, dxpos, dypos, ct) != true) {
 		return false;
 	}
 	return (cells[ypos][xpos] == CELLTYPE_EBLACK);

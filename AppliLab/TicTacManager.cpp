@@ -40,9 +40,7 @@ void TicTacManager::MakeMove() {
 		std::cout << "Недопустимый ход, попробуйте ещё раз." << std::endl;
 		ShowBoard();
 	}
-	/*if () {
-
-	}*/
+	/*if(this->board->CanFight())*/
 	if (this->board->CheckEndCondition()) {
 		if (this->board->CheckEndCondition())
 			std::cout << "Игрок " << currentPlayer->GetName() << " победил!" << std::endl;
@@ -52,6 +50,7 @@ void TicTacManager::MakeMove() {
 		ShowBoard();
 		return;
 	}
+	
 	currentPlayer = (currentPlayer == player1) ? player2 : player1;
 }
 
