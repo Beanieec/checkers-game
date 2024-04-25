@@ -13,16 +13,13 @@ class TicTacBoard {
 	CellType** cells;
 	bool bVictory = false;
 	bool side = false;
-	bool IsRowMade(unsigned row);
-	bool IsColumnMade(unsigned col);
-	bool IsDiagMade();
-	bool IsBoardFull();
 public:
 	TicTacBoard(int size);
 	virtual ~TicTacBoard();
 	void Show();
 	void SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct);
 	bool CanFight(int dypos, int dxpos, CellType ct);
+	bool OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool CheckEndCondition();

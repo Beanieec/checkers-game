@@ -12,7 +12,7 @@ TicTacBoard::TicTacBoard(int size) {
 			else
 				cells[i][j] = CELLTYPE_EBLACK;
 		}
-		if (boardsize > 8) {
+		/*if (boardsize > 8) {
 			if (i % 2 == 1 && i <= 3) {
 				for (unsigned j = 2; j <= 8; j += 2) {
 					cells[i][j] = CELLTYPE_PWHITE;
@@ -34,8 +34,13 @@ TicTacBoard::TicTacBoard(int size) {
 					cells[i][j] = CELLTYPE_PBLACK;
 				}
 			}
-		}
+		}*/
 	}
+	cells[3][2] = CELLTYPE_PWHITE;
+	cells[5][4] = CELLTYPE_PWHITE;
+	cells[7][6] = CELLTYPE_PWHITE;
+	cells[8][7] = CELLTYPE_PBLACK;
+	cells[1][8] = CELLTYPE_PWHITE;
 }
 
 void TicTacBoard::Show() {
@@ -67,7 +72,6 @@ void TicTacBoard::Show() {
 				std::cout << "\033[47m  \033[0m";
 				break;
 			}
-			/*std::cout << " ";*/
 		}
 		std::cout << std::endl;
 	}
@@ -84,8 +88,9 @@ TicTacBoard::~TicTacBoard() {
 	delete[] cells;
 }
 
+
 bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) {
-	
+
 	if (ct == CELLTYPE_PWHITE) {
 		if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PBLACK) {
 			if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
@@ -115,8 +120,44 @@ bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) {
 		}
 	}
 	return false;
+}
 
-	
+bool TicTacBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
+	if (CanFight(dypos, dxpos, ct)) {
+		if (ypos + 2 >= boardsize || xpos + 2 >= boardsize || ypos - 2 < 0 || xpos - 2 < 0) {
+			return false;
+		}
+		else{
+			if (CanFight(ypos, xpos, ct))
+				return true;
+			
+			/*if (ct == CELLTYPE_PWHITE) {
+				if ((cells[ypos + 1][xpos + 1]) == CELLTYPE_PBLACK) {
+					if ((cells[ypos + 2][xpos + 2]) == CELLTYPE_EBLACK) {
+						return true;
+					}
+				}
+				if ((cells[ypos + 1][xpos - 1]) == CELLTYPE_PBLACK) {
+					if ((cells[ypos + 2][xpos - 2]) == CELLTYPE_EBLACK) {
+						return true;
+					}
+				}
+			}
+			if (ct == CELLTYPE_PBLACK) {
+				if ((cells[ypos - 1][xpos + 1]) == CELLTYPE_PWHITE) {
+					if ((cells[ypos - 2][xpos + 2]) == CELLTYPE_EBLACK) {
+						return true;
+					}
+				}
+				if ((cells[ypos - 1][xpos - 1]) == CELLTYPE_PWHITE) {
+					if ((cells[ypos - 2][xpos - 2]) == CELLTYPE_EBLACK) {
+						return true;
+					}
+				}
+			}*/
+		}
+	}
+	return false;
 }
 
 bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
@@ -126,6 +167,9 @@ bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType c
 	}
 
 	if (CanFight(dypos, dxpos, ct)) {
+		
+		std::cout << "RAB " << std::endl;
+		
 		switch (ct)
 		{
 		case CELLTYPE_PWHITE:
@@ -149,13 +193,13 @@ bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType c
 			switch (side)
 			{
 			case true:
-				if (dypos - ypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos - 1][xpos + 1] != CELLTYPE_PWHITE)
+				if (dypos - ypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos + 1][xpos + 1] != CELLTYPE_PWHITE)
 					return false;
 				cells[dypos - 1][dxpos - 1] = CELLTYPE_EBLACK;
 				return true;
 				break;
 			case false:
-				if (dypos - ypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos - 1][xpos - 1] != CELLTYPE_PWHITE)
+				if (dypos - ypos != 2 || std::abs(xpos - dxpos) != 2 || cells[ypos + 1][xpos - 1] != CELLTYPE_PWHITE)
 					return false;
 				cells[dypos - 1][dxpos + 1] = CELLTYPE_EBLACK;
 				return true;
@@ -187,7 +231,7 @@ bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType c
 
 bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
 	
-	if ((xpos < 0) || (xpos > boardsize) || (ypos < 0) || (ypos > boardsize)){
+	if ((xpos < 0) || (xpos >= boardsize) || (ypos < 0) || (ypos >= boardsize)){
 		return false;
 	}
 
@@ -201,68 +245,21 @@ bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType 
 	return (cells[ypos][xpos] == CELLTYPE_EBLACK);
 }
 
-bool TicTacBoard::IsRowMade(unsigned row) {
-	int numX = 0, numO = 0;
-	for (unsigned i = 0; i < boardsize; i++) {
-		if (cells[row][i] == CELLTYPE_PBLACK) numO++;
-		if (cells[row][i] == CELLTYPE_PWHITE) numX++;
-	}
-	if ((numX == boardsize) || (numO == boardsize)) {
-		bVictory = true;
-		return true;
-	}
-	return false;
-}
-
-bool TicTacBoard::IsColumnMade(unsigned col) {
-	int numX = 0, numO = 0;
-	for (unsigned i = 0; i < boardsize; i++) {
-		if (cells[i][col] == CELLTYPE_PBLACK) numO++;
-		if (cells[i][col] == CELLTYPE_PWHITE) numX++;
-	}
-
-	if ((numX == boardsize) || (numO == boardsize)) {
-		bVictory = true;
-		return true;
-	}
-	return false;
-}
-
-bool TicTacBoard::IsDiagMade() {
-	int numX = 0, numO = 0;
-	for (unsigned i = 0; i < boardsize; i++) {
-		if (cells[i][i] == CELLTYPE_PBLACK) numO++;
-		if (cells[i][i] == CELLTYPE_PWHITE) numX++;
-	}
-	if ((numX == boardsize) || (numO == boardsize)) {
-		bVictory = true;
-		return true;
-	}
-	return false;
-}
-
-bool TicTacBoard::IsBoardFull() {
-	int numX = 0, numO = 0;
-	for (unsigned i = 0; i < boardsize; i++) {
-		for (unsigned j = 0; j < boardsize; j++) {
-			if (cells[i][j] == CELLTYPE_PBLACK) numO++;
-			if (cells[i][j] == CELLTYPE_PWHITE) numX++;
-		}
-	}
-	if ((numX + numO) == (boardsize * boardsize))
-		return true;
-
-	return false;
-}
 
 bool TicTacBoard::CheckEndCondition() {
-	for (unsigned i = 0; i < boardsize; i++) {
-		if (IsRowMade(i) || IsColumnMade(i))
-			return true;
-	}
-	if (IsDiagMade() || IsBoardFull())
-		return true;
+	/*for (unsigned i = 1; i < boardsize; i++) {
+		for (unsigned j = 0; j < boardsize; j++){
+			if ((cells[i][j] == CELLTYPE_PBLACK) < 1) {
+				std::cout << "black" << std::endl;
+				return true;
+			}
+			if ((cells[i][j] == CELLTYPE_PWHITE) < 1) {
+				std::cout << "white" << std::endl;
+				return true;
 
+			}
+		}
+	}*/
 	return false;
 }
 

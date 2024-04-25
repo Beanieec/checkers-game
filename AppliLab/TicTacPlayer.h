@@ -12,6 +12,8 @@ class TicTacPlayer {
 	CellType cellType;
 	CellType dcellType;
 	std::string name;
+	char dletter, letter;
+	int row, col, drow, dcol;
 public:
 	TicTacPlayer();
 	virtual ~TicTacPlayer();

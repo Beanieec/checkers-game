@@ -18,8 +18,6 @@ void TicTacPlayer::SetBoard(TicTacBoard* board) {
 //bool TicTacPlayer::
 
 bool TicTacPlayer::MakeMove() {
-	char dletter, letter; 
-	int row, col, drow, dcol;
 	std::cout << "Игрок " << "\033[42m" << name << "\033[0m" << ", ваш ход..." << std::endl;
 	std::cout << "Какой фигурой пойдёте? ";
 	std::cout << "Введите координаты(A1-B2): ";
@@ -28,9 +26,16 @@ bool TicTacPlayer::MakeMove() {
 	drow = dletter - '@';
 	row = letter - '@';
 
+	if (this->board->OneMore(col, row, dcol, drow, this->cellType)) {
+		if (this->board->CheckLegal(col, row, dcol, drow, this->cellType)) {
+			this->board->SetCell(col, row, this->cellType, dcol, drow, this->dcellType);
+			std::cout << "А дальше?" << std::endl;
+		}
+		board->Show();
+		return MakeMove();
+	}
 	if (this->board->CheckLegal(col, row, dcol, drow, this->cellType)) {
 		this->board->SetCell(col, row, this->cellType, dcol, drow, this->dcellType);
-
 		return true;
 	}
 	return false;
