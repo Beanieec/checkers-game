@@ -11,13 +11,15 @@ class TicTacPlayer {
 	TicTacBoard* board;
 	CellType cellType;
 	CellType dcellType;
+	CellType wcellType;
 	std::string name;
 	char dletter, letter;
 	int row, col, drow, dcol;
+	int& zrow = row;
 public:
 	TicTacPlayer();
 	virtual ~TicTacPlayer();
-	void SetupPlayer(std::string name, CellType cellType, CellType dcellType);
+	void SetupPlayer(std::string name, CellType cellType, CellType dcellType, CellType wcellType);
 	void SetBoard(TicTacBoard* board);
 	bool MakeMove();
 	std::string GetName();

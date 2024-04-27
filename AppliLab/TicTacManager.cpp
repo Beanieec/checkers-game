@@ -11,10 +11,10 @@ bool TicTacManager::Init() {
 	//cin.ignore();
 	std::cout << "¬ведите им€ игрока, играющего \033[47m \033[0m: ";
 	std::getline(std::cin, playerName);
-	player1->SetupPlayer(playerName, CELLTYPE_PWHITE, CELLTYPE_EBLACK);
+	player1->SetupPlayer(playerName, CELLTYPE_PWHITE, CELLTYPE_EBLACK, CELLTYPE_WOMWHITE);
 	std::cout << "¬ведите им€ игрока, играющего \033[41m \033[0m: ";
 	std::getline(std::cin, playerName);
-	player2->SetupPlayer(playerName, CELLTYPE_PBLACK, CELLTYPE_EBLACK);
+	player2->SetupPlayer(playerName, CELLTYPE_PBLACK, CELLTYPE_EBLACK, CELLTYPE_WOMBLACK);
 	player2->SetBoard(this->board);
 	player1->SetBoard(this->board);
 	currentPlayer = player1;

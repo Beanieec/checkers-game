@@ -12,7 +12,7 @@ TicTacBoard::TicTacBoard(int size) {
 			else
 				cells[i][j] = CELLTYPE_EBLACK;
 		}
-		if (boardsize > 8) {
+		/*if (boardsize > 8) {
 			if (i % 2 == 1 && i <= 3) {
 				for (unsigned j = 2; j <= 8; j += 2) {
 					cells[i][j] = CELLTYPE_PWHITE;
@@ -34,13 +34,13 @@ TicTacBoard::TicTacBoard(int size) {
 					cells[i][j] = CELLTYPE_PBLACK;
 				}
 			}
-		}
+		}*/
 	}
-	/*cells[3][2] = CELLTYPE_PWHITE;
+	cells[3][2] = CELLTYPE_PWHITE;
 	cells[4][3] = CELLTYPE_PWHITE;
 	cells[7][6] = CELLTYPE_PWHITE;
 	cells[6][5] = CELLTYPE_PBLACK;
-	cells[1][8] = CELLTYPE_PWHITE;*/
+	cells[1][8] = CELLTYPE_PWHITE;
 }
 
 void TicTacBoard::Show() {
@@ -71,10 +71,22 @@ void TicTacBoard::Show() {
 			case CELLTYPE_EWHITE:
 				std::cout << "\033[47m  \033[0m";
 				break;
+			case CELLTYPE_WOMBLACK:
+				std::cout << "\033[31;42m[]\033[0m";
+				break;
+			case CELLTYPE_WOMWHITE:
+				std::cout << "\033[37;42m[]\033[0m";
+				break;
 			}
 		}
 		std::cout << std::endl;
 	}
+}
+
+void TicTacBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct) {
+	std::cout << "STAVLU" << std::endl;
+	cells[ypos][xpos] = wct;
+	cells[dypos][dxpos] = dct;
 }
 
 void TicTacBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) {
@@ -89,7 +101,10 @@ TicTacBoard::~TicTacBoard() {
 }
 
 
-bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) {
+bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность нападения
+	
+	if (dypos + 2 >= boardsize || dxpos + 2 >= boardsize || dypos - 2 < 0 || dxpos - 2 < 0)
+		return false;
 
 	if (ct == CELLTYPE_PWHITE) {
 		if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PBLACK) {
@@ -122,7 +137,25 @@ bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) {
 	return false;
 }
 
-bool TicTacBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
+bool TicTacBoard::Woman(int xpos, int ypos, int dxpos, int dypos, CellType ct, CellType wct) { //дамка
+	
+	if (cells[dypos][dxpos] == CELLTYPE_WOMWHITE || cells[dypos][dxpos] == CELLTYPE_WOMBLACK)
+		return true;
+	
+	for (unsigned i = 1; i < boardsize; i++) {
+		if (ct == CELLTYPE_PWHITE) {
+			if (cells[ypos][xpos] == cells[8][i])
+				return true;
+		}
+		if (ct == CELLTYPE_PBLACK) {
+			if (cells[1][i] == CELLTYPE_PBLACK)
+				return true;
+		}
+	}
+	return false;
+}
+
+bool TicTacBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct) { // повторное нападение
 	if (CanFight(dypos, dxpos, ct)) {
 		if (ypos + 2 >= boardsize || xpos + 2 >= boardsize || ypos - 2 < 0 || xpos - 2 < 0) {
 			return false;
@@ -135,7 +168,7 @@ bool TicTacBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct)
 	return false;
 }
 
-bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
+bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct) { //правила хода
 	
 	if (cells[dypos][dxpos] != ct) {
 		return false;
@@ -199,19 +232,19 @@ bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType c
 	}
 }
 
-bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct) {
+bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct) { //базовые условия
 	
-	if ((xpos < 0) || (xpos >= boardsize) || (ypos < 0) || (ypos >= boardsize)){
+	if ((xpos < 0) || (xpos >= boardsize) || (ypos < 0) || (ypos >= boardsize))
 		return false;
-	}
-
-	if (cells[dypos][dxpos] == CELLTYPE_EBLACK) {
+	if (cells[dypos][dxpos] == CELLTYPE_EBLACK) 
 		return false;
-	}
+	if (cells[dypos][dxpos] == CELLTYPE_EWHITE) 
+		return false;
+	if (cells[ypos][xpos] == CELLTYPE_EWHITE)
+		return false;
+	if (MovesRule(xpos, ypos, dxpos, dypos, ct) != true) 
+		return false;
 	
-	if (MovesRule(xpos, ypos, dxpos, dypos, ct) != true) {
-		return false;
-	}
 	return (cells[ypos][xpos] == CELLTYPE_EBLACK);
 }
 
