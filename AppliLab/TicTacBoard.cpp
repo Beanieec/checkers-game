@@ -268,7 +268,4 @@ bool TicTacBoard::CheckEndCondition() {
 
 bool TicTacBoard::IsVictory() {
 	return bVictory;
-	if (boardsize = 0) {
-
-	}
 }
