@@ -83,13 +83,13 @@ void TicTacBoard::Show() {
 	}
 }
 
-void TicTacBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct) {
+void TicTacBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct) { //отрисовка дамки
 	std::cout << "STAVLU" << std::endl;
 	cells[ypos][xpos] = wct;
 	cells[dypos][dxpos] = dct;
 }
 
-void TicTacBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) {
+void TicTacBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) { //отрисовка хода
 	cells[ypos][xpos] = ct;
 	cells[dypos][dxpos] = dct;
 }
@@ -249,7 +249,7 @@ bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType 
 }
 
 
-bool TicTacBoard::CheckEndCondition() {
+bool TicTacBoard::CheckEndCondition() { //победа
 	unsigned blackcount = 0;
 	unsigned whitecount = 0;
 
