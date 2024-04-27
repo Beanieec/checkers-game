@@ -42,7 +42,6 @@ TicTacBoard::TicTacBoard(int size) {
 	cells[6][5] = CELLTYPE_PBLACK;
 	cells[1][8] = CELLTYPE_PWHITE;
 }
-
 void TicTacBoard::Show() {
 	std::cout << "  ";
 	for (unsigned j = 1; j < boardsize; j++) {
@@ -85,13 +84,14 @@ void TicTacBoard::Show() {
 
 void TicTacBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct) { //отрисовка дамки
 	std::cout << "STAVLU" << std::endl;
-	cells[ypos][xpos] = wct;
-	cells[dypos][dxpos] = dct;
+		cells[ypos][xpos] = wct;
+		cells[dypos][dxpos] = dct;
 }
 
 void TicTacBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) { //отрисовка хода
-	cells[ypos][xpos] = ct;
-	cells[dypos][dxpos] = dct;
+		cells[ypos][xpos] = ct;
+		cells[dypos][dxpos] = dct;
+	
 }
 
 TicTacBoard::~TicTacBoard() {
