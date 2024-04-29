@@ -1,6 +1,6 @@
-#include "TicTacBoard.h"
+#include "ChekersBoard.h"
 
-TicTacBoard::TicTacBoard(int size) {
+ChekersBoard::ChekersBoard(int size) {
 	this->boardsize = size;
 	this->cells = new CellType * [size];
 	for (unsigned i = 0; i < size; i++) {
@@ -42,7 +42,7 @@ TicTacBoard::TicTacBoard(int size) {
 	cells[5][2] = CELLTYPE_PBLACK;
 	//cells[1][8] = CELLTYPE_PWHITE;*/
 }
-void TicTacBoard::Show() {
+void ChekersBoard::Show() {
 	std::cout << "  ";
 	for (unsigned j = 1; j < boardsize; j++) {
 		if (j > 9) {
@@ -82,26 +82,26 @@ void TicTacBoard::Show() {
 	}
 }
 
-void TicTacBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct) { //отрисовка дамки
+void ChekersBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct) { //отрисовка дамки
 	std::cout << "STAVLU" << std::endl;
 		cells[ypos][xpos] = wct;
 		cells[dypos][dxpos] = dct;
 }
 
-void TicTacBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) { //отрисовка хода
+void ChekersBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) { //отрисовка хода
 		cells[ypos][xpos] = ct;
 		cells[dypos][dxpos] = dct;
 	
 }
 
-TicTacBoard::~TicTacBoard() {
+ChekersBoard::~ChekersBoard() {
 	for (unsigned i = 0; i < boardsize; i++)
 		delete[] cells[i];
 	delete[] cells;
 }
 
 
-bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность нападения
+bool ChekersBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность нападения
 	
 	if (dypos + 2 >= boardsize || dypos - 2 < 0)
 		return false;
@@ -137,7 +137,7 @@ bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность на
 	return false;
 }
 
-bool TicTacBoard::Woman(int xpos, int ypos, int dxpos, int dypos, CellType ct, CellType wct) { //дамка
+bool ChekersBoard::Woman(int xpos, int ypos, int dxpos, int dypos, CellType ct, CellType wct) { //дамка
 	
 	if (cells[dypos][dxpos] == CELLTYPE_WOMWHITE || cells[dypos][dxpos] == CELLTYPE_WOMBLACK)
 		return true;
@@ -155,7 +155,7 @@ bool TicTacBoard::Woman(int xpos, int ypos, int dxpos, int dypos, CellType ct, C
 	return false;
 }
 
-bool TicTacBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct) { // повторное нападение
+bool ChekersBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct) { // повторное нападение
 	if (CanFight(dypos, dxpos, ct)) {
 		if (ypos + 2 >= boardsize || xpos + 2 >= boardsize || ypos - 2 < 0 || xpos - 2 < 0) {
 			return false;
@@ -168,7 +168,7 @@ bool TicTacBoard::OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct)
 	return false;
 }
 
-bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct) { //правила хода
+bool ChekersBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct) { //правила хода
 	
 	if (cells[dypos][dxpos] != ct) {
 		return false;
@@ -232,7 +232,7 @@ bool TicTacBoard::MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType c
 	}
 }
 
-bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct) { //базовые условия
+bool ChekersBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct) { //базовые условия
 	
 	if ((xpos < 0) || (xpos >= boardsize) || (ypos < 0) || (ypos >= boardsize))
 		return false;
@@ -249,7 +249,7 @@ bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType 
 }
 
 
-bool TicTacBoard::CheckEndCondition() { //победа
+bool ChekersBoard::CheckEndCondition() { //победа
 	unsigned blackcount = 0;
 	unsigned whitecount = 0;
 
@@ -266,6 +266,6 @@ bool TicTacBoard::CheckEndCondition() { //победа
 	return false;
 }
 
-bool TicTacBoard::IsVictory() {
+bool ChekersBoard::IsVictory() {
 	return bVictory;
 }

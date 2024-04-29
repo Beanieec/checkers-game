@@ -1,10 +1,10 @@
-#include "TicTacPlayer.h"
+#include "HumPlayer.h"
 
-TicTacPlayer::TicTacPlayer() {}
+HumPlayer::HumPlayer() {}
 
-TicTacPlayer::~TicTacPlayer() {}
+HumPlayer::~HumPlayer() {}
 
-void TicTacPlayer::SetupPlayer(std::string name, CellType cellType, CellType dcellType, CellType wcellType) {
+void HumPlayer::SetupPlayer(std::string name, CellType cellType, CellType dcellType, CellType wcellType) {
 	this->name = name;
 	this->cellType = cellType;
 	this->dcellType = dcellType;
@@ -12,13 +12,13 @@ void TicTacPlayer::SetupPlayer(std::string name, CellType cellType, CellType dce
 
 }
 
-void TicTacPlayer::SetBoard(TicTacBoard* board) {
+void HumPlayer::SetBoard(ChekersBoard* board) {
 	this->board = board;
 }
 
-//bool TicTacPlayer::
+//bool HumPlayer::
 
-bool TicTacPlayer::MakeMove() {
+bool HumPlayer::MakeMove() {
 	std::cout << "Игрок " << "\033[42m" << name << "\033[0m" << ", ваш ход..." << std::endl;
 	std::cout << "Какой фигурой пойдёте? ";
 	std::cout << "Введите координаты(A1-B2): ";
@@ -71,6 +71,6 @@ bool TicTacPlayer::MakeMove() {
 	return false;
 }
 
-std::string TicTacPlayer::GetName() {
+std::string HumPlayer::GetName() {
 	return this->name;
 }

@@ -6,21 +6,21 @@
 
 #include <iostream>
 #include <string>
-#include "TicTacBoard.h"
-#include "TicTacPlayer.h"
+#include "ChekersBoard.h"
+#include "HumPlayer.h"
 #include "CellType.h"
 
 using namespace std;
 
-class TicTacManager {
-	TicTacBoard* board;
-	TicTacPlayer* player1;
-	TicTacPlayer* player2;
-	TicTacPlayer* currentPlayer;
+class GameManager {
+	ChekersBoard* board;
+	HumPlayer* player1;
+	HumPlayer* player2;
+	HumPlayer* currentPlayer;
 	bool bGameFinished = false;
 public:
-	TicTacManager();
-	virtual ~TicTacManager();
+	GameManager();
+	virtual ~GameManager();
 	bool Init();
 	void ShowBoard();
 	void MakeMove();

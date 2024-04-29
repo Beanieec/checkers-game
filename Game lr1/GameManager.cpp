@@ -1,13 +1,13 @@
-#include "TicTacManager.h"
+#include "GameManager.h"
 
-TicTacManager::TicTacManager() {}
+GameManager::GameManager() {}
 
-bool TicTacManager::Init() {
+bool GameManager::Init() {
 	unsigned int boardsize = 9;
 	std::string playerName;
-	this->board = new TicTacBoard(boardsize);
-	this->player1 = new TicTacPlayer();
-	this->player2 = new TicTacPlayer();
+	this->board = new ChekersBoard(boardsize);
+	this->player1 = new HumPlayer();
+	this->player2 = new HumPlayer();
 	//cin.ignore();
 	std::cout << "Введите имя игрока, играющего \033[47m \033[0m: ";
 	std::getline(std::cin, playerName);
@@ -24,17 +24,17 @@ bool TicTacManager::Init() {
 	return true;
 }
 
-TicTacManager::~TicTacManager() {
+GameManager::~GameManager() {
 	delete this->player2;
 	delete this->player1;
 	delete this->board;
 }
 
-void TicTacManager::ShowBoard() {
+void GameManager::ShowBoard() {
 	this->board->Show();
 }
 
-void TicTacManager::MakeMove() {
+void GameManager::MakeMove() {
 	ShowBoard();
 	while (!currentPlayer->MakeMove()) {
 		std::cout << "Недопустимый ход, попробуйте ещё раз." << std::endl;
@@ -53,6 +53,6 @@ void TicTacManager::MakeMove() {
 	currentPlayer = (currentPlayer == player1) ? player2 : player1;
 }
 
-bool TicTacManager::IsGameFinished() {
+bool GameManager::IsGameFinished() {
 	return bGameFinished;
 }

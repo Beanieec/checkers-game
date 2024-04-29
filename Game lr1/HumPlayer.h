@@ -4,11 +4,11 @@
 
 #define _TICTACPLAYER_H_
 
-#include "TicTacBoard.h"
+#include "ChekersBoard.h"
 #include "CellType.h"
 
-class TicTacPlayer {
-	TicTacBoard* board;
+class HumPlayer {
+	ChekersBoard* board;
 	CellType cellType;
 	CellType dcellType;
 	CellType wcellType;
@@ -17,10 +17,10 @@ class TicTacPlayer {
 	int row, col, drow, dcol;
 	int& zrow = row;
 public:
-	TicTacPlayer();
-	virtual ~TicTacPlayer();
+	HumPlayer();
+	virtual ~HumPlayer();
 	void SetupPlayer(std::string name, CellType cellType, CellType dcellType, CellType wcellType);
-	void SetBoard(TicTacBoard* board);
+	void SetBoard(ChekersBoard* board);
 	bool MakeMove();
 	std::string GetName();
 };

@@ -8,14 +8,14 @@
 #include <cmath>
 #include "CellType.h"
 
-class TicTacBoard {
+class ChekersBoard {
 	int boardsize;
 	CellType** cells;
 	bool bVictory = false;
 	bool side = false;
 public:
-	TicTacBoard(int size);
-	virtual ~TicTacBoard();
+	ChekersBoard(int size);
+	virtual ~ChekersBoard();
 	void Show();
 	void SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct);
 	void WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dypos, CellType dct);
