@@ -47,6 +47,7 @@ void TicTacManager::MakeMove() {
 			std::cout << "Íè÷üÿ!" << std::endl;
 		this->bGameFinished = true;
 		ShowBoard();
+		std::cout << "      \033[41mÊîÍåÖ!!!\033[0m" << std::endl;
 		return;
 	}
 	currentPlayer = (currentPlayer == player1) ? player2 : player1;

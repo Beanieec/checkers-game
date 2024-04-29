@@ -46,8 +46,8 @@ bool TicTacPlayer::MakeMove() {
 	
 	if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) {
 		if (this->board->CheckLegal(col, zrow, dcol, drow, this->cellType)) {
-			if (this->board->Woman(col, row, dcol, drow, this->cellType, this->wcellType)) {
-				this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType);
+			if (this->board->Woman(col, zrow, dcol, drow, this->cellType, this->wcellType)) {
+				this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
 			}
 			else {
 				this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
@@ -58,8 +58,8 @@ bool TicTacPlayer::MakeMove() {
 		return MakeMove();
 	}
 	if (this->board->CheckLegal(col, zrow, dcol, drow, this->cellType)) {
-		if (this->board->Woman(col, row, dcol, drow, this->cellType, this->wcellType)) {
-			this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType);
+		if (this->board->Woman(col, zrow, dcol, drow, this->cellType, this->wcellType)) {
+			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
 		}
 		else {
 			this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);

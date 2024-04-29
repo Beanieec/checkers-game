@@ -36,11 +36,11 @@ TicTacBoard::TicTacBoard(int size) {
 			}
 		}*/
 	}
-	cells[3][2] = CELLTYPE_PWHITE;
-	cells[4][3] = CELLTYPE_PWHITE;
-	cells[7][6] = CELLTYPE_PWHITE;
-	cells[6][5] = CELLTYPE_PBLACK;
-	cells[1][8] = CELLTYPE_PWHITE;
+	/*cells[1][2] = CELLTYPE_PWHITE;*/
+	/*cells[4][7] = CELLTYPE_PBLACK;*/
+	cells[4][1] = CELLTYPE_PWHITE;
+	cells[5][2] = CELLTYPE_PBLACK;
+	//cells[1][8] = CELLTYPE_PWHITE;*/
 }
 void TicTacBoard::Show() {
 	std::cout << "  ";
@@ -103,7 +103,7 @@ TicTacBoard::~TicTacBoard() {
 
 bool TicTacBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность нападения
 	
-	if (dypos + 2 >= boardsize || dxpos + 2 >= boardsize || dypos - 2 < 0 || dxpos - 2 < 0)
+	if (dypos + 2 >= boardsize || dypos - 2 < 0)
 		return false;
 
 	if (ct == CELLTYPE_PWHITE) {
@@ -144,11 +144,11 @@ bool TicTacBoard::Woman(int xpos, int ypos, int dxpos, int dypos, CellType ct, C
 	
 	for (unsigned i = 1; i < boardsize; i++) {
 		if (ct == CELLTYPE_PWHITE) {
-			if (cells[ypos][xpos] == cells[8][i])
+			if (ypos == 8)
 				return true;
 		}
 		if (ct == CELLTYPE_PBLACK) {
-			if (cells[1][i] == CELLTYPE_PBLACK)
+			if (ypos == 1)
 				return true;
 		}
 	}
@@ -242,7 +242,7 @@ bool TicTacBoard::CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType 
 		return false;
 	if (cells[ypos][xpos] == CELLTYPE_EWHITE)
 		return false;
-	if (MovesRule(xpos, ypos, dxpos, dypos, ct) != true) 
+	if (!MovesRule(xpos, ypos, dxpos, dypos, ct)) 
 		return false;
 	
 	return (cells[ypos][xpos] == CELLTYPE_EBLACK);
