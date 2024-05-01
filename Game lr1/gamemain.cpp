@@ -18,5 +18,5 @@ int main(int argc, char* argv[]) {
 	}
 	
 	SetConsoleCP(866);
-	return 0;
+	return 228;
 }

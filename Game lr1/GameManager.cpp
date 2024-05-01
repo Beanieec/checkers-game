@@ -37,12 +37,12 @@ void GameManager::ShowBoard() {
 void GameManager::MakeMove() {
 	ShowBoard();
 	while (!currentPlayer->MakeMove()) {
-		std::cout << "Недопустимый ход, попробуйте ещё раз." << std::endl;
+		std::cout << "\033[41mНедопустимый ход, попробуйте ещё раз!\033[0m" << std::endl;
 		ShowBoard();
 	}
-	if (this->board->CheckEndCondition()) {
-		if (this->board->CheckEndCondition())
-			std::cout << "Игрок " << currentPlayer->GetName() << " победил!" << std::endl;
+	if (this->board->CheckEndConditionScorecounter()) {
+		if (this->board->CheckEndConditionScorecounter())
+			std::cout << "  \033[42m" << "Игрок " << currentPlayer->GetName() << " победил!" << "\033[0m" << std::endl;
 		else
 			std::cout << "Ничья!" << std::endl;
 		this->bGameFinished = true;
