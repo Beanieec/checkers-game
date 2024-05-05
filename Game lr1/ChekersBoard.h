@@ -27,6 +27,7 @@ public:
 	bool OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool MovesRule(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool CheckLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct);
+	bool CheckLegal(int xpos, int ypos, int bufxpos, int bufypos, int dxpos, int dypos, CellType ct);
 	bool WomanLegal(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool onlyFight(CellType ct);
 	void onlyFightcheck(CellType ct, std::vector<std::pair<std::pair<int, int>, bool>>* validCoords);

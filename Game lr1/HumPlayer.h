@@ -16,13 +16,16 @@ class HumPlayer {
 	char dletter, letter;
 	int row, col, drow, dcol;
 	int& zrow = row;
+	
 public:
 	HumPlayer();
 	virtual ~HumPlayer();
 	void SetupPlayer(std::string name, CellType cellType, CellType dcellType, CellType wcellType);
 	void SetBoard(ChekersBoard* board);
-	bool MakeMove();
+	bool MakeMove(int bufdcol, int bufdrow);
 	std::string GetName();
+	int onmorecount = 0;
+	int onlyfightcount = 0;
 };
 
 #endif

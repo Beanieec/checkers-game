@@ -20,6 +20,7 @@ bool GameManager::Init() {
 	currentPlayer = player1;
 	std::cout << "Обычные пешки имеют вид - " << wh << " ; " << bk << std::endl;
 	std::cout << "Дамки имеют вид - " << kwh << " ; " << kbk << std::endl;
+	std::cout << "\033[32m====================================\033[0m" << std::endl;
 
 	return true;
 }
@@ -36,18 +37,18 @@ void GameManager::ShowBoard() {
 
 void GameManager::MakeMove() {
 	ShowBoard();
-	while (!currentPlayer->MakeMove()) {
-		std::cout << "\033[41mНедопустимый ход, попробуйте ещё раз!\033[0m" << std::endl;
+	while (!currentPlayer->MakeMove(0, 0)) {
+		std::cout << "  \033[4;41mНедопустимый ход, попробуйте ещё\033[0m" << std::endl;
 		ShowBoard();
 	}
 	if (this->board->CheckEndConditionScorecounter()) {
 		if (this->board->CheckEndConditionScorecounter())
-			std::cout << "  \033[42m" << "Игрок " << currentPlayer->GetName() << " победил!" << "\033[0m" << std::endl;
+			std::cout << "          \033[4;42m" << "Игрок " << currentPlayer->GetName() << " победил!" << "\033[0m" << std::endl;
 		else
 			std::cout << "Ничья!" << std::endl;
 		this->bGameFinished = true;
 		ShowBoard();
-		std::cout << "      \033[41mКоНеЦ!!!\033[0m" << std::endl;
+		std::cout << "              \033[41mКонец!!!\033[0m" << std::endl;
 		return;
 	}
 	currentPlayer = (currentPlayer == player1) ? player2 : player1;

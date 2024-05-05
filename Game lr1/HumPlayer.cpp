@@ -18,71 +18,63 @@ void HumPlayer::SetBoard(ChekersBoard* board) {
 
 //bool HumPlayer::
 
-bool HumPlayer::MakeMove() {
+bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
+	std::cout << "\033[32m====================================\033[0m" << std::endl;
 	std::cout << "Èãðîê " << "\033[42m" << name << "\033[0m" << ", âàø õîä..." << std::endl;
-	std::cout << "Êàêîé ôèãóðîé ïîéä¸òå? ";
+	std::cout << "Êàêîé ôèãóðîé ïîéä¸òå? " << std::endl;
 	std::cout << "Ââåäèòå êîîðäèíàòû(A1-B2): ";
 	std::cin >> dletter >> dcol >> letter >> col;
+	std::cout << "\033[32m====================================\033[0m" << std::endl;
 
 	drow = dletter - '@';
 	zrow = letter - '@';
 	
-	//if (this->board->Woman(col, zrow, dcol, drow, this->cellType, this->wcellType)) {
-	//	std::cout << "woma" << std::endl;
-	//	/*if (this->board->OneMore(col, row, dcol, drow, this->cellType)) {
-	//		if (this->board->CheckLegal(col, row, dcol, drow, this->cellType)) {
-	//			this->board->SetCell(col, row, this->cellType, dcol, drow, this->dcellType);
-	//			std::cout << "À äàëüøå?" << std::endl;
-	//		}
-	//		board->Show();
-	//		return MakeMove();
-	//	}*/
-	//	/*if (this->board->CheckLegal(col, row, dcol, drow, this->cellType)) {*/
-	//		this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
-	//		std::cout << "womasasa" << std::endl;
-	//		return true;
-	//	//}
-	//}
-	
-
-	//if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) {
-	//	std::cout << "tut1" << std::endl;
-	//	/*if (this->board->CheckLegal(col, zrow, dcol, drow, this->cellType)) {
-	//		if (this->board->Woman(zrow, this->cellType)) {
-	//			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
-	//		}
-	//		else {
-	//			this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
-	//			std::cout << "À äàëüøå?" << std::endl;
-	//		}
-	//	}*/
-	//	if (this->board->onlyFight(this->cellType)) {
-	//		if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) {
-	//			this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
-	//			if (this->board->onlyFight(this->cellType)) {
-	//				board->Show();
-	//				return MakeMove();
-	//			}
-	//			else
-	//			{
-	//				return true;
-	//			}
-	//		}
-	//		else {
-	//			std::cout << "\033[37;42mÂÛ ÎÁßÇÀÍÛ ÑÚÅÑÒÜ ØÀØÊÓ\033[0m" << std::endl;
-	//			return false;
-	//		}
-	//	}
-	//	board->Show();
-	//	return MakeMove();
-	//}
+	if (onlyfightcount != onmorecount) {
+		std::cout << "tut1" << std::endl;
+		if (this->board->CheckLegal(col, zrow, bufdcol, bufdrow, dcol, drow, this->cellType)) {
+			if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) {
+				if (this->board->Woman(zrow, this->cellType)) {
+					this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
+				}
+				else {
+					this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
+				}
+				if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) {
+					board->Show();
+					return MakeMove(col, zrow);
+				}
+				else
+				{
+					onlyfightcount++;
+					return true;
+				}
+			}
+			else {
+				std::cout << "       \033[37;42mÂÛ ÎÁßÇÀÍÛ ÄÎÁÈÒÜ ØÀØÊÓ\033[0m" << std::endl;
+				board->Show();
+				return MakeMove(bufdcol, bufdrow);
+			}
+		}
+		else {
+			std::cout << "       \033[37;42mÂÛ ÎÁßÇÀÍÛ ÄÎÁÈÒÜ ØÀØÊÓ\033[0m" << std::endl;
+			board->Show();
+			return MakeMove(bufdcol, bufdrow);
+		}
+	}
 	if (this->board->onlyFight(this->cellType)) {
 		std::cout << "tut2" << std::endl;
-		if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) { //ÏÐÎÁËÅÌÛ ÑÎ ÑÒÎÐÎÍÀÌÈ
-			this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
-			if (this->board->onlyFight(this->cellType)) { //ÍÅ ÏÐÀÂÈËÜÍÎ, ÍÓÆÍÎ ÒÎËÜÊÎ ÏÎÑËÅ ÕÎÄÀ ÏÐÎÂÅÐßÒÜ
+		if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) { 
+			if (this->board->Woman(zrow, this->cellType)) {
+				this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
+			}
+			else {
+				this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
+
+			}
+			if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) { 
 				board->Show();
-				return MakeMove();
+				onmorecount++;
+				return MakeMove(col, zrow);
 			}
 			else
 			{
@@ -90,13 +82,12 @@ bool HumPlayer::MakeMove() {
 			}
 		}
 		else {
-			std::cout << "\033[37;42mÂÛ ÎÁßÇÀÍÛ ÑÚÅÑÒÜ ØÀØÊÓ\033[0m" << std::endl;
+			std::cout << "       \033[37;42mÂÛ ÎÁßÇÀÍÛ ÑÚÅÑÒÜ ØÀØÊÓ\033[0m" << std::endl;
 			return false;
 		}
 	}
 	if (this->board->iisWoman(dcol, drow)) {
 		if (this->board->WomanLegal(col, zrow, dcol, drow, this->cellType)) {
-			std::cout << "WOMKA" << std::endl;
 			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
 			return true;
 		}
@@ -104,7 +95,6 @@ bool HumPlayer::MakeMove() {
 	}
 	if (this->board->CheckLegal(col, zrow, dcol, drow, this->cellType)) {
 		if (this->board->Woman(zrow, this->cellType)) {
-			std::cout << "CHECKSS" << std::endl;
 			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
 		}
 		else {
