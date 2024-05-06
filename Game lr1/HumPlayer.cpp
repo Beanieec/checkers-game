@@ -28,7 +28,7 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 
 	drow = dletter - '@';
 	zrow = letter - '@';
-	
+	//повтор удара
 	if (onlyfightcount != onmorecount) {
 		std::cout << "tut1" << std::endl;
 		if (this->board->CheckLegal(col, zrow, bufdcol, bufdrow, dcol, drow, this->cellType)) {
@@ -61,6 +61,7 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 			return MakeMove(bufdcol, bufdrow);
 		}
 	}
+	//первый удар
 	if (this->board->onlyFight(this->cellType)) {
 		std::cout << "tut2" << std::endl;
 		if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) { 
@@ -69,7 +70,6 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 			}
 			else {
 				this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
-
 			}
 			if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) { 
 				board->Show();
@@ -86,6 +86,7 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 			return false;
 		}
 	}
+	//становление дамки
 	if (this->board->iisWoman(dcol, drow)) {
 		if (this->board->WomanLegal(col, zrow, dcol, drow, this->cellType)) {
 			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
@@ -93,6 +94,7 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 		}
 		return false;
 	}
+	//простые ходы
 	if (this->board->CheckLegal(col, zrow, dcol, drow, this->cellType)) {
 		if (this->board->Woman(zrow, this->cellType)) {
 			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
@@ -103,7 +105,6 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 		}
 		return true;
 	}
-	
 	return false;
 }
 

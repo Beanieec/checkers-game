@@ -105,7 +105,6 @@ void ChekersBoard::WSetCell(int xpos, int ypos, CellType wct, int dxpos, int dyp
 void ChekersBoard::SetCell(int xpos, int ypos, CellType ct, int dxpos, int dypos, CellType dct) { //отрисовка хода
 		cells[ypos][xpos] = ct;
 		cells[dypos][dxpos] = dct;
-	
 }
 
 ChekersBoard::~ChekersBoard() {
