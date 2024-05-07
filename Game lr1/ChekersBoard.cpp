@@ -12,7 +12,7 @@ ChekersBoard::ChekersBoard(int size) {
 			else
 				cells[i][j] = CELLTYPE_EBLACK;
 		}
-		if (boardsize > 8) {
+		/*if (boardsize > 8) {
 			if (i % 2 == 1 && i <= 3) {
 				for (unsigned j = 2; j <= 8; j += 2) {
 					cells[i][j] = CELLTYPE_PWHITE;
@@ -34,18 +34,18 @@ ChekersBoard::ChekersBoard(int size) {
 					cells[i][j] = CELLTYPE_PBLACK;
 				}
 			}
-		}
+		}*/
 	}
 	/*cells[1][2] = CELLTYPE_PWHITE;
 	cells[2][3] = CELLTYPE_PBLACK;*/
-	//cells[6][3] = CELLTYPE_PWHITE;
-	////cells[2][7] = CELLTYPE_PWHITE;
-	////cells[3][2] = CELLTYPE_PBLACK;
-	//cells[4][5] = CELLTYPE_PWHITE;
-	////cells[3][6] = CELLTYPE_PBLACK;
-	////cells[3][8] = CELLTYPE_PBLACK;
-	//cells[5][6] = CELLTYPE_PBLACK;
-	//cells[7][6] = CELLTYPE_PBLACK;
+	cells[6][5] = CELLTYPE_WOMWHITE;
+	//cells[2][7] = CELLTYPE_PWHITE;
+	//cells[3][2] = CELLTYPE_PBLACK;
+	cells[3][4] = CELLTYPE_PWHITE;
+	cells[7][6] = CELLTYPE_PBLACK;
+	cells[5][4] = CELLTYPE_PBLACK;
+	cells[5][6] = CELLTYPE_PBLACK;
+	cells[7][4] = CELLTYPE_PBLACK;
 }
 void ChekersBoard::Show() {
 	std::cout << "        ";
@@ -114,44 +114,120 @@ ChekersBoard::~ChekersBoard() {
 }
 
 bool ChekersBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность нападени€
-	if (ct == CELLTYPE_PWHITE) {
-		if (dypos + 2 >= boardsize) {
-			return false;
-		}
-		if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PBLACK) {
-			if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
-				if (cells[dypos][dxpos] == CELLTYPE_PWHITE) {
+	if (ct == CELLTYPE_PWHITE) { //белые
+		
+		if (cells[dypos][dxpos] == CELLTYPE_WOMWHITE) {
+			
+			if ((cells[dypos - 1][dxpos + 1]) == CELLTYPE_PBLACK) {
+				if ((cells[dypos - 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+					std::cout << "B3" << std::endl;
 					side = false;
 					return true;
+
+				}
+			}
+			if ((cells[dypos - 1][dxpos - 1]) == CELLTYPE_PBLACK) {
+				if ((cells[dypos - 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+					std::cout << "B4" << std::endl;
+					side = true;
+					return true;
+
+				}
+			}
+			if (dypos < 7) {
+				if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PBLACK) {
+					if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+						std::cout << "B1" << std::endl;
+						side = false;
+						return true;
+
+					}
+				}
+				if ((cells[dypos + 1][dxpos - 1]) == CELLTYPE_PBLACK) {
+					if ((cells[dypos + 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+						std::cout << "B2" << std::endl;
+						side = true;
+						return true;
+
+					}
 				}
 			}
 		}
-		if ((cells[dypos + 1][dxpos - 1]) == CELLTYPE_PBLACK) {
-			if ((cells[dypos + 2][dxpos - 2]) == CELLTYPE_EBLACK) {
-				if (cells[dypos][dxpos] == CELLTYPE_PWHITE) {
-					side = true;
-					return true;
+		else {
+			if (dypos + 2 >= boardsize) {
+				return false;
+			}
+			if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PBLACK) {
+				if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+					if (cells[dypos][dxpos] == CELLTYPE_PWHITE) {
+						side = false;
+						return true;
+					}
+				}
+			}
+			if ((cells[dypos + 1][dxpos - 1]) == CELLTYPE_PBLACK) {
+				if ((cells[dypos + 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+					if (cells[dypos][dxpos] == CELLTYPE_PWHITE) {
+						side = true;
+						return true;
+					}
 				}
 			}
 		}
 	}
-	if (ct == CELLTYPE_PBLACK) {
-		if (dypos - 2 <= 0) {
-			return false;
-		}
-		if ((cells[dypos - 1][dxpos + 1]) == CELLTYPE_PWHITE) {
-			if ((cells[dypos - 2][dxpos + 2]) == CELLTYPE_EBLACK) {
-				if (cells[dypos][dxpos] == CELLTYPE_PBLACK) {
+	if (ct == CELLTYPE_PBLACK) { //чЄрные
+		if (cells[dypos][dxpos] == CELLTYPE_WOMBLACK) {
+			if ((cells[dypos - 1][dxpos + 1]) == CELLTYPE_PWHITE) {
+				if ((cells[dypos - 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+
 					side = false;
 					return true;
+
+				}
+			}
+			if ((cells[dypos - 1][dxpos - 1]) == CELLTYPE_PWHITE) {
+				if ((cells[dypos - 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+
+					side = true;
+					return true;
+
+				}
+			}
+			if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PWHITE) {
+				if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+
+					side = false;
+					return true;
+
+				}
+			}
+			if ((cells[dypos + 1][dxpos - 1]) == CELLTYPE_PWHITE) {
+				if ((cells[dypos + 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+
+					side = true;
+					return true;
+
 				}
 			}
 		}
-		if ((cells[dypos - 1][dxpos - 1]) == CELLTYPE_PWHITE) {
-			if ((cells[dypos - 2][dxpos - 2]) == CELLTYPE_EBLACK) {
-				if (cells[dypos][dxpos] == CELLTYPE_PBLACK) {
-					side = true;
-					return true;
+		else {
+			if (dypos - 2 <= 0) {
+				return false;
+			}
+			if ((cells[dypos - 1][dxpos + 1]) == CELLTYPE_PWHITE) {
+				if ((cells[dypos - 2][dxpos + 2]) == CELLTYPE_EBLACK) {
+					if (cells[dypos][dxpos] == CELLTYPE_PBLACK) {
+						side = false;
+						return true;
+					}
+				}
+			}
+			if ((cells[dypos - 1][dxpos - 1]) == CELLTYPE_PWHITE) {
+				if ((cells[dypos - 2][dxpos - 2]) == CELLTYPE_EBLACK) {
+					if (cells[dypos][dxpos] == CELLTYPE_PBLACK) {
+						side = true;
+						return true;
+					}
 				}
 			}
 		}
@@ -160,7 +236,9 @@ bool ChekersBoard::CanFight(int dypos, int dxpos, CellType ct) { //возможность н
 }
 
 bool ChekersBoard::iisWoman(int dxpos, int dypos) {
+	std::cout << dypos << dxpos << std::endl;
 	if (cells[dypos][dxpos] == CELLTYPE_WOMWHITE || cells[dypos][dxpos] == CELLTYPE_WOMBLACK) {
+		std::cout << "YEA" << std::endl;
 		return true;
 	}
 	return false;
@@ -314,6 +392,19 @@ bool ChekersBoard::onlyFightRule(int xpos, int ypos, int dxpos, int dypos, CellT
 			switch (sside)
 			{
 			case true:
+				if (cells[dypos][dxpos] == CELLTYPE_WOMWHITE) {
+					std::cout << "D1" << std::endl; 
+					if (j - ypos != 2 || std::abs(xpos - i) != 2 || cells[ypos + 1][xpos + 1] != CELLTYPE_PBLACK) {
+						if (count == total)
+							return false;
+						else
+							continue;
+					}
+					else {
+						cells[ypos + 1][xpos + 1] = CELLTYPE_EBLACK; //lllllll
+						return true;
+					}
+				}
 				if (ypos - j != 2 || std::abs(xpos - i) != 2 || cells[ypos - 1][xpos + 1] != CELLTYPE_PBLACK) {
 					if (count == total)
 						return false;
@@ -326,9 +417,24 @@ bool ChekersBoard::onlyFightRule(int xpos, int ypos, int dxpos, int dypos, CellT
 				}
 				break;
 			case false:
+				if (cells[dypos][dxpos] == CELLTYPE_WOMWHITE) {//////////////TUT
+					std::cout << "D2" << std::endl;
+					if (j - ypos != 2 || std::abs(xpos - i) != 2 || cells[ypos + 1][xpos - 1] != CELLTYPE_PBLACK) {
+						if (count == total)
+							return false;
+						else
+							continue;
+					}
+					else {
+						cells[ypos + 1][xpos - 1] = CELLTYPE_EBLACK; //lllllllll
+						return true;
+					}
+				}
 				if (ypos - j != 2 || std::abs(xpos - i) != 2 || cells[ypos - 1][xpos - 1] != CELLTYPE_PBLACK) {
-					if (count == total)
+					if (count == total) {
+						std::cout << "ERROR2" << std::endl;
 						return false;
+					}
 					else
 						continue;
 				}
@@ -343,6 +449,19 @@ bool ChekersBoard::onlyFightRule(int xpos, int ypos, int dxpos, int dypos, CellT
 			switch (sside)
 			{
 			case true:
+				/*if (cells[i][j] == CELLTYPE_WOMBLACK) {
+					if (j - ypos != 2 || std::abs(xpos - i) != 2 || cells[ypos + 1][xpos + 1] != CELLTYPE_PWHITE) {
+						if (count == total)
+							return false;
+						else
+							continue;
+					}
+					else {
+						cells[j - 1][i - 1] = CELLTYPE_EBLACK;
+						return true;
+					}
+					break;
+				}*/
 				if (j - ypos != 2 || std::abs(xpos - i) != 2 || cells[ypos + 1][xpos + 1] != CELLTYPE_PWHITE) {
 					if (count == total)
 						return false;

@@ -15,7 +15,6 @@ class HumPlayer {
 	std::string name;
 	char dletter, letter;
 	int row, col, drow, dcol;
-	int& zrow = row;
 	
 public:
 	HumPlayer();

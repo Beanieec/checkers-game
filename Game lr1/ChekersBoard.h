@@ -32,7 +32,6 @@ public:
 	bool onlyFight(CellType ct);
 	void onlyFightcheck(CellType ct, std::vector<std::pair<std::pair<int, int>, bool>>* validCoords);
 	bool onlyFightRule(int xpos, int ypos, int dxpos, int dypos, CellType ct);
-	//void pairs([](int y, int x));
 	bool CheckEndConditionScorecounter();
 	bool IsVictory();
 };

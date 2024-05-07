@@ -9,14 +9,11 @@ void HumPlayer::SetupPlayer(std::string name, CellType cellType, CellType dcellT
 	this->cellType = cellType;
 	this->dcellType = dcellType;
 	this->wcellType = wcellType;
-
 }
 
 void HumPlayer::SetBoard(ChekersBoard* board) {
 	this->board = board;
 }
-
-//bool HumPlayer::
 
 bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 	std::cout << "\033[32m====================================\033[0m" << std::endl;
@@ -27,21 +24,25 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 	std::cout << "\033[32m====================================\033[0m" << std::endl;
 
 	drow = dletter - '@';
-	zrow = letter - '@';
+	row = letter - '@';
+
 	//повтор удара
 	if (onlyfightcount != onmorecount) {
 		std::cout << "tut1" << std::endl;
-		if (this->board->CheckLegal(col, zrow, bufdcol, bufdrow, dcol, drow, this->cellType)) {
-			if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) {
-				if (this->board->Woman(zrow, this->cellType)) {
-					this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
+		if (this->board->CheckLegal(col, row, bufdcol, bufdrow, dcol, drow, this->cellType)) {
+			if (this->board->onlyFightRule(col, row, dcol, drow, this->cellType)) {
+				if (this->board->Woman(row, this->cellType)) {
+					this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType);
+				}
+				else if (this->board->iisWoman(dcol, drow)) {
+					this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType); //отрисовка хода дамки
 				}
 				else {
-					this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
+					this->board->SetCell(col, row, this->cellType, dcol, drow, this->dcellType);
 				}
-				if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) {
+				if (this->board->OneMore(col, row, dcol, drow, this->cellType)) {
 					board->Show();
-					return MakeMove(col, zrow);
+					return MakeMove(col, row);
 				}
 				else
 				{
@@ -62,46 +63,49 @@ bool HumPlayer::MakeMove(int bufdcol, int bufdrow) {
 		}
 	}
 	//первый удар
-	if (this->board->onlyFight(this->cellType)) {
+	if (this->board->onlyFight(this->cellType)) { // есть удар
 		std::cout << "tut2" << std::endl;
-		if (this->board->onlyFightRule(col, zrow, dcol, drow, this->cellType)) { 
-			if (this->board->Woman(zrow, this->cellType)) {
-				this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
+		if (this->board->onlyFightRule(col, row, dcol, drow, this->cellType)) { //удар правильный для шашки
+			std::cout << "tut3" << std::endl;
+			if (this->board->Woman(row, this->cellType)) { //становление дамки [8]
+				this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType); //отрисовка хода дамки
+			}
+			else if (this->board->iisWoman(dcol, drow)) {
+				this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType); //отрисовка хода дамки
 			}
 			else {
-				this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
+				this->board->SetCell(col, row, this->cellType, dcol, drow, this->dcellType); //отрисовка хода шашки
 			}
-			if (this->board->OneMore(col, zrow, dcol, drow, this->cellType)) { 
+			if (this->board->OneMore(col, row, dcol, drow, this->cellType)) { // есть ещё удар
 				board->Show();
 				onmorecount++;
-				return MakeMove(col, zrow);
+				return MakeMove(col, row);
 			}
 			else
 			{
-				return true;
+				return true; //удар совершён - конец хода
 			}
 		}
 		else {
 			std::cout << "       \033[37;42mВЫ ОБЯЗАНЫ СЪЕСТЬ ШАШКУ\033[0m" << std::endl;
-			return false;
+			return false; // удар есть, но бьёшь не так
 		}
 	}
-	//становление дамки
-	if (this->board->iisWoman(dcol, drow)) {
-		if (this->board->WomanLegal(col, zrow, dcol, drow, this->cellType)) {
-			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
+	//простые дамки
+	if (this->board->iisWoman(dcol, drow)) { //выбранная шашка является дамкой
+		if (this->board->WomanLegal(col, row, dcol, drow, this->cellType)) { //правила простого хода дамки
+			this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType); //отрисовка хода дамки
 			return true;
 		}
 		return false;
 	}
 	//простые ходы
-	if (this->board->CheckLegal(col, zrow, dcol, drow, this->cellType)) {
-		if (this->board->Woman(zrow, this->cellType)) {
-			this->board->WSetCell(col, zrow, this->wcellType, dcol, drow, this->dcellType);
+	if (this->board->CheckLegal(col, row, dcol, drow, this->cellType)) { //правила простого хода шашки
+		if (this->board->Woman(row, this->cellType)) { //становление дамки [8]
+			this->board->WSetCell(col, row, this->wcellType, dcol, drow, this->dcellType); //отрисовка хода дамки
 		}
 		else {
-			this->board->SetCell(col, zrow, this->cellType, dcol, drow, this->dcellType);
-
+			this->board->SetCell(col, row, this->cellType, dcol, drow, this->dcellType); //отрисовка хода шашки
 		}
 		return true;
 	}
