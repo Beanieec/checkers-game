@@ -11,9 +11,11 @@ bool GameManager::Init() {
 	//cin.ignore();
 	std::cout << "Введите имя игрока, играющего \033[47m \033[0m: ";
 	std::getline(std::cin, playerName);
+
 	player1->SetupPlayer(playerName, CELLTYPE_PWHITE, CELLTYPE_EBLACK, CELLTYPE_WOMWHITE);
 	std::cout << "Введите имя игрока, играющего \033[41m \033[0m: ";
 	std::getline(std::cin, playerName);
+	std::cout << std::endl;
 	player2->SetupPlayer(playerName, CELLTYPE_PBLACK, CELLTYPE_EBLACK, CELLTYPE_WOMBLACK);
 	player2->SetBoard(this->board);
 	player1->SetBoard(this->board);
@@ -49,6 +51,7 @@ void GameManager::MakeMove() {
 		this->bGameFinished = true;
 		ShowBoard();
 		std::cout << "              \033[41mКонец!!!\033[0m" << std::endl;
+		std::cout << "\033[32m====================================\033[0m" << std::endl;
 		return;
 	}
 	currentPlayer = (currentPlayer == player1) ? player2 : player1;

@@ -18,5 +18,6 @@ int main(int argc, char* argv[]) {
 	}
 	
 	SetConsoleCP(866);
+	system("pause");
 	return 228;
 }
