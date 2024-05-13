@@ -50,7 +50,7 @@ void GameManager::MakeMove() {
 			std::cout << "Ничья!" << std::endl;
 		this->bGameFinished = true;
 		ShowBoard();
-		std::cout << "              \033[41mКонец!!!\033[0m" << std::endl;
+		std::cout << "              \033[41mКонец...\033[0m" << std::endl;
 		std::cout << "\033[32m====================================\033[0m" << std::endl;
 		return;
 	}

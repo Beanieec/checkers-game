@@ -12,7 +12,7 @@ ChekersBoard::ChekersBoard(int size) {
 			else
 				cells[i][j] = CELLTYPE_EBLACK;
 		}
-		if (boardsize > 8) {
+		/*if (boardsize > 8) {
 			if (i % 2 == 1 && i <= 3) {
 				for (unsigned j = 2; j <= 8; j += 2) {
 					cells[i][j] = CELLTYPE_PWHITE;
@@ -34,17 +34,20 @@ ChekersBoard::ChekersBoard(int size) {
 					cells[i][j] = CELLTYPE_PBLACK;
 				}
 			}
-		}
+		}*/
 	}
-	/*cells[4][7] = CELLTYPE_PWHITE;
-	cells[5][6] = CELLTYPE_PBLACK;
-	cells[7][6] = CELLTYPE_PBLACK;
-	cells[8][5] = CELLTYPE_WOMWHITE;
-	cells[2][7] = CELLTYPE_PWHITE;
-	cells[7][4] = CELLTYPE_PBLACK;
-	cells[4][5] = CELLTYPE_PWHITE;
-	cells[1][8] = CELLTYPE_WOMBLACK;
-	cells[5][4] = CELLTYPE_PBLACK;
+	cells[2][3] = CELLTYPE_EBLACK;
+	cells[3][2] = CELLTYPE_PBLACK;
+	cells[3][4] = CELLTYPE_PBLACK;
+	cells[7][2] = CELLTYPE_EBLACK;
+	///*cells[5][6] = CELLTYPE_PBLACK;
+	//cells[7][6] = CELLTYPE_PBLACK;
+	//cells[8][5] = CELLTYPE_WOMWHITE;*/
+	cells[4][1] = CELLTYPE_WOMWHITE;
+	cells[5][2] = CELLTYPE_PBLACK;
+	/*cells[4][5] = CELLTYPE_PWHITE;*/
+	cells[1][4] = CELLTYPE_WOMBLACK;
+	/*cells[5][4] = CELLTYPE_PBLACK;
 	cells[5][6] = CELLTYPE_PBLACK;
 	cells[2][3] = CELLTYPE_PWHITE;*/
 }
@@ -188,10 +191,17 @@ bool ChekersBoard::iisWoman(int dxpos, int dypos) { //является ли пешка дамкой
 	return false;
 }
 
+void ChekersBoard::CanFightOneMore(int dypos, int dxpos, CellType ct) {
+
+}
+
 void ChekersBoard::CanFight(std::vector<std::pair<std::pair<int, int>, bool>>* canfightCoords, int dypos, int dxpos, CellType ct) {
 	if (ct == CELLTYPE_PWHITE) { //белые
 		if ((cells[dypos][dxpos]) == CELLTYPE_WOMWHITE) { //Дамка
 			if ((cells[dypos - 1][dxpos + 1]) == CELLTYPE_PBLACK || (cells[dypos - 1][dxpos + 1]) == CELLTYPE_WOMBLACK) {
+				if (dypos - 2 <= 1) {
+					return;
+				}
 				if ((cells[dypos - 2][dxpos + 2]) == CELLTYPE_EBLACK) {
 					side = false;
 					canfightCoords->push_back(std::make_pair(std::make_pair(dypos, dxpos), side));
@@ -199,6 +209,9 @@ void ChekersBoard::CanFight(std::vector<std::pair<std::pair<int, int>, bool>>* c
 				}
 			}
 			if ((cells[dypos - 1][dxpos - 1]) == CELLTYPE_PBLACK || (cells[dypos - 1][dxpos - 1]) == CELLTYPE_WOMBLACK) {
+				if (dypos - 2 <= 1) {
+					return;
+				}
 				if ((cells[dypos - 2][dxpos - 2]) == CELLTYPE_EBLACK) {
 					side = true;
 					canfightCoords->push_back(std::make_pair(std::make_pair(dypos, dxpos), side));
@@ -228,6 +241,7 @@ void ChekersBoard::CanFight(std::vector<std::pair<std::pair<int, int>, bool>>* c
 	}
 	if (ct == CELLTYPE_PBLACK) { //чёрные
 		if ((cells[dypos][dxpos]) == CELLTYPE_WOMBLACK) { //Дамка
+
 			if ((cells[dypos + 1][dxpos + 1]) == CELLTYPE_PWHITE || (cells[dypos + 1][dxpos + 1]) == CELLTYPE_WOMWHITE) {
 				if ((cells[dypos + 2][dxpos + 2]) == CELLTYPE_EBLACK) {
 
@@ -417,7 +431,7 @@ bool ChekersBoard::onlyFightRule(int xpos, int ypos, int dxpos, int dypos, CellT
 						continue;
 				}
 				else {
-					cells[ypos + 1][xpos - 1] == CELLTYPE_EBLACK;
+					cells[ypos + 1][xpos - 1] = CELLTYPE_EBLACK;
 					return true;
 				}
 				break;
@@ -442,6 +456,7 @@ void ChekersBoard::onlyFightcheck(CellType ct, std::vector<std::pair<std::pair<i
 	std::vector<std::pair<std::pair<int, int>, bool>> fightCoords;
 	for (int i = 1; i < boardsize; i++) {
 		for (int j = 0; j < boardsize; j++) {
+			
 			CanFight(&fightCoords, j, i, ct);
 			for (const auto& coord : fightCoords) {
 				int p = coord.first.first;
