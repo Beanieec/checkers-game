@@ -3,12 +3,11 @@
 GameManager::GameManager() {}
 
 bool GameManager::Init() {
-	unsigned int boardsize = 9;
+	int boardsize = 9;
 	std::string playerName;
 	this->board = new ChekersBoard(boardsize);
 	this->player1 = new HumPlayer();
 	this->player2 = new HumPlayer();
-	//cin.ignore();
 	std::cout << "¬ведите им€ игрока, играющего \033[47m \033[0m: ";
 	std::getline(std::cin, playerName);
 

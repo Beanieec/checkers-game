@@ -13,7 +13,6 @@
 class ChekersBoard {
 	int boardsize;
 	CellType** cells;
-	bool bVictory = false;
 	bool side = false;
 public:
 	ChekersBoard(int size);
@@ -29,14 +28,12 @@ public:
 	bool Woman(int ypos, CellType ct);
 	
 	void CanFight(std::vector<std::pair<std::pair<int, int>, bool>>* canfightCoords, int dypos, int dxpos, CellType ct);
-	bool CanFight(int dypos, int dxpos, CellType ct);
 	void CanFightOneMore(std::vector<std::pair<std::pair<int, int>, bool>>* canfightonemoreCoordsint, int dypos, int dxpos, CellType ct);
 	bool OneMore(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool onlyFight(CellType ct);
 	void onlyFightcheck(CellType ct, std::vector<std::pair<std::pair<int, int>, bool>>* validCoords);
 	bool onlyFightRule(int xpos, int ypos, int dxpos, int dypos, CellType ct);
 	bool CheckEndConditionScorecounter();
-	bool IsVictory();
 };
 
 #endif

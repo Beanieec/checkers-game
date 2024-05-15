@@ -15,6 +15,8 @@ class HumPlayer {
 	std::string name;
 	char dletter, letter;
 	int row, col, drow, dcol;
+	int onmorecount = 0;
+	int onlyfightcount = 0;
 	
 public:
 	HumPlayer();
@@ -23,8 +25,6 @@ public:
 	void SetBoard(ChekersBoard* board);
 	bool MakeMove(int bufdcol, int bufdrow);
 	std::string GetName();
-	int onmorecount = 0;
-	int onlyfightcount = 0;
 };
 
 #endif

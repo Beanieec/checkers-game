@@ -1,7 +1,6 @@
 #pragma once
 
 #ifndef _CELLTYPE_H_
-
 #define _CELLTYPE_H_
 
 enum CellType {
@@ -12,6 +11,4 @@ enum CellType {
 	CELLTYPE_WOMWHITE,
 	CELLTYPE_WOMBLACK
 };
-
-
 #endif
